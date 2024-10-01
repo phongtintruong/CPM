@@ -77,7 +77,7 @@ class Makeup:
             c=3,
         )
         self.mask_out_eye = (mask_out_eye > 0).astype("uint8")  # [:, :, np.newaxis]
-        tf.reset_default_graph()
+        tf.compat.v1.reset_default_graph()
 
     def prn_process_target(self, face):
         # --- face
@@ -100,7 +100,7 @@ class Makeup:
             borderMode=cv2.BORDER_CONSTANT,
             borderValue=(0),
         )
-        tf.reset_default_graph()
+        tf.compat.v1.reset_default_graph()
         return texture
 
     def get_texture(self):
