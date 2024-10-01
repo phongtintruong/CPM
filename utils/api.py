@@ -13,11 +13,12 @@ class PRN:
         prefix(str, optional): If run at another folder, the absolute path is needed to load the data.
     """
 
-    def __init__(self, is_dlib=False, prefix="."):
+    def __init__(self, is_dlib=False, prefix=".", weight_path=None):
 
         # resolution of input and output image size.
         self.resolution_inp = 256
         self.resolution_op = 256
+        self.weight_path = weight_path
 
         # ---- load detectors
         if is_dlib:
@@ -29,7 +30,7 @@ class PRN:
         # ---- load PRN
         self.pos_predictor = PosPrediction(self.resolution_inp, self.resolution_op)
         prn_path = os.path.join(prefix, "PRNet/net-data/256_256_resfcn256_weight")
-        if not os.path.isfile(prn_path + ".data-00000-of-00001"):
+        if not os.path.isfile(weight_path):
             print("please download PRN trained model first.")
             exit()
         self.pos_predictor.restore(prn_path)

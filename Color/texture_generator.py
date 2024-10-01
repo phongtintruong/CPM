@@ -11,9 +11,9 @@ from utils.api import PRN
 
 
 class Texture_Generator:
-    def __init__(self):
+    def __init__(self, prn_weight_path):
         prefix = os.getcwd()
-        self.prn = PRN(is_dlib=True, prefix=prefix[:-6])
+        self.prn = PRN(is_dlib=True, prefix=prefix[:-6], weight_path=prn_weight_path)
 
     def get_texture(self, image, seg):
         pos = self.prn.process(image)
