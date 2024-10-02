@@ -3,7 +3,6 @@ import argparse
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--prn_weight_path", default="", type=str)
     parser.add_argument("--checkpoint_pattern", default="./checkpoints/pattern.pth", type=str)
     parser.add_argument("--checkpoint_color", default="./checkpoints/color.pth", type=str)
     parser.add_argument("--device", default="cuda", type=str)

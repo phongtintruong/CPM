@@ -21,7 +21,7 @@ class Makeup:
         self.color.load_state_dict(torch.load(args.checkpoint_color))
         self.color.eval()
         if args.prn:
-            self.prn = PRN(is_dlib=True, weight_path=args.prn_weight_path)
+            self.prn = PRN(is_dlib=True)
 
     def get_mask(self, img):
         x_tensor = to_tensor(img / 255)

@@ -25,7 +25,7 @@ def get_args():
 
 if __name__ == "__main__":
     args = get_args()
-    generator = Texture_Generator(args.prn_weight_path)
+    generator = Texture_Generator()
 
     list_imgs = glob.glob(os.path.join(args.path, "images", "*", "*.png"))
     filenames = [x.split("/all/images/")[-1] for x in list_imgs]

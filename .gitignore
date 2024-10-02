@@ -130,7 +130,7 @@ dmypy.json
 
 # Folder
 
-#PRNet/net-data/
+PRNet/net-data/
 Data/
 # File
 #result.png
