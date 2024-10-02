@@ -24,16 +24,20 @@ if __name__ == "__main__":
     args = get_args()
     model = Makeup(args)
 
-    input_dir = args.input_dir
-    style_dir = args.style_dir
+    dataset_dir = args.dataset_dir
     output_dir = args.savedir
 
-    input_images = sorted(os.listdir(input_dir))
-    style_images = sorted(os.listdir(style_dir))
+    input_images = sorted(os.listdir(os.path.join(dataset_dir, "images", "non-makeup")))
+    style_images = sorted(os.listdir(os.path.join(dataset_dir, "images", "makeup")))
 
-    for input_image, style_image in zip(input_images, style_images):
-        imgA = np.array(Image.open(os.path.join(input_dir, input_image)))
-        imgB = np.array(Image.open(os.path.join(style_dir, style_image)))
+    seg_input_images = sorted(os.listdir(os.path.join(dataset_dir, "segs", "non-makeup")))
+    seg_style_images = sorted(os.listdir(os.path.join(dataset_dir, "segs", "makeup")))
+
+    for idx, (input_image, style_image) in enumerate(zip(input_images, style_images), start=1):
+        imgA = np.array(Image.open(os.path.join(dataset_dir, "images", "non-makeup", input_image)))
+        imgB = np.array(Image.open(os.path.join(dataset_dir, "images", "makeup", style_image)))
+        seg_imgA = np.array(Image.open(os.path.join(dataset_dir, "segs", "non-makeup", input_image)))
+        seg_imgB = np.array(Image.open(os.path.join(dataset_dir, "segs", "makeup", style_image)))
         imgB = cv2.resize(imgB, (256, 256))
 
         model.prn_process(imgA)
@@ -53,8 +57,16 @@ if __name__ == "__main__":
             output = model.blend_imgs(model.face, output, alpha=1)
 
         x2, y2, x1, y1 = model.location_to_crop()
-        # output = np.concatenate([imgB[x2:], model.face[x2:], output[x2:]], axis=1)
-        save_path = os.path.join(output_dir, f"{os.path.splitext(input_image)[0]}_{os.path.splitext(style_image)[0]}.png")
+        infer_img_save_path = os.path.join(output_dir, "images", "infer", f"{idx}.png")
+        input_img_save_path = os.path.join(output_dir, "images", "non-makeup", f"{idx}.png")
+        style_img_save_path = os.path.join(output_dir, "images", "makeup", f"{idx}.png")
+        seg_input_img_save_path = os.path.join(output_dir, "segs", "non-makeup", f"{idx}.png")
+        seg_style_img_save_path = os.path.join(output_dir, "segs", "makeup", f"{idx}.png")
 
-        Image.fromarray((output).astype("uint8")).save(save_path)
-        print(f"Completed 👍 Please check result in: {save_path}")
+        Image.fromarray((output).astype("uint8")).save(infer_img_save_path)
+        Image.fromarray(imgA).save(input_img_save_path)
+        Image.fromarray(imgB).save(style_img_save_path)
+        Image.fromarray(seg_imgA).save(seg_input_img_save_path)
+        Image.fromarray(seg_imgB).save(seg_style_img_save_path)
+
+        print(f"Completed 👍 Please check result in: {infer_img_save_path}")
