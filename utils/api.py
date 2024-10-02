@@ -30,7 +30,7 @@ class PRN:
         # ---- load PRN
         self.pos_predictor = PosPrediction(self.resolution_inp, self.resolution_op)
         prn_path = os.path.join(prefix, "PRNet/net-data/256_256_resfcn256_weight")
-        if not os.path.isfile(weight_path):
+        if not os.path.isfile(self.weight_path):
             print("please download PRN trained model first.")
             exit()
         self.pos_predictor.restore(prn_path)
