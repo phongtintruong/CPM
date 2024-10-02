@@ -33,7 +33,7 @@ class PRN:
         if not os.path.isfile(self.weight_path):
             print("please download PRN trained model first.")
             exit()
-        self.pos_predictor.restore(prn_path)
+        self.pos_predictor.restore(self.weight_path)
 
         # uv file
         self.uv_kpt_ind = np.loadtxt(prefix + "/PRNet/uv-data/uv_kpt_ind.txt").astype(np.int32)  # 2 x 68 get kpt
